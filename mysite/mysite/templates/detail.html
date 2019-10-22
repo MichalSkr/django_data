@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        table, th, td {
+          border: 1px solid black;
+          border-collapse: collapse;
+        }
+    </style>
+</head>
+<body>
+    <div class="col-md-4">
+         <h2>DATA</h2>
+        <table>
+            <tr>
+                <th>Date</th>
+                <th>Channel</th>
+                <th>Country</th>
+                <th>Os</th>
+                <th>Impressions</th>
+                <th>Clicks</th>
+                <th>Installs</th>
+                <th>Spend</th>
+                <th>Revenue</th>
+            </tr>
+
+             {% for d in data %}
+                <tr>
+                    <td>
+                        {{ d.date }}
+                    </td>
+
+                    <td>
+                        {{ d.channel }}
+                    </td>
+
+                    <td>
+                        {{ d.country }}
+                    </td>
+
+                    <td>
+                        {{ d.os }}
+                    </td>
+
+                    <td>
+                        {{ d.impressions }}
+                    </td>
+
+                    <td>
+                        {{ d.clicks }}
+                    </td>
+
+                    <td>
+                        {{ d.installs }}
+                    </td>
+
+                    <td>
+                        {{ d.spend }}
+                    </td>
+
+                    <td>
+                        {{ d.revenue }}
+                    </td>
+                </tr>
+            {% endfor %}
+
+
+        </table>
+
+    </div>
+
+
+</body>
+</html>
