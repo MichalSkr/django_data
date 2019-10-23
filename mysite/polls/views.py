@@ -11,6 +11,11 @@ data_query = None
 
 
 def data_get(request):
+    """
+
+    :param request:
+    :return:
+    """
     if request.method == 'GET':
         global data_query
 
@@ -23,13 +28,18 @@ def data_get(request):
 
 @csrf_exempt
 def data_get_specific(request):
+    """
+
+    :param request:
+    :return:
+    """
     global data_query
     if request.method == 'POST':
         try:
             json_data = json.loads(request.body)
-            group_by = json_data['group_by'] if 'group_by' in json_data.keys() else ''
-            order_by = json_data['sort_by'] if 'sort_by' in json_data.keys() else ''
-            filter_by = json_data['filter_by'] if 'filter_by' in json_data.keys() else ''
+            group_by = json_data.get('group_by', ["date"])  # default grouping will be by date
+            order_by = json_data.get('sort_by', "")
+            filter_by = json_data.get('filter_by', "")
             filters = {}
             for key in filter_by.keys():
                 val = filter_by[key]
@@ -39,16 +49,18 @@ def data_get_specific(request):
                     if key == 'date_to':
                         key = 'date__lte'
                     filters[key] = val
-            data_query = DataSet.objects.values('country', 'channel', 'date').filter(**filters).annotate(
+            database_fields = [f.name for f in DataSet._meta.get_fields()]
+            data_query = DataSet.objects.values(*group_by).filter(**filters).annotate(
                 at_total_instance=F("installs"),
                 CPI=Case(
                     When(at_total_instance=0, then=0),
                     default=F("spend") / F("installs"),
                     output_field=FloatField()
-                ))
+                )).annotate(s=Sum('clicks')).values(*database_fields)
+
             if order_by:
                 args = []
-                data_query = data_query.order_by(*args)[:-1]
+                data_query = data_query.order_by(*args)
 
         except DataSet.DoesNotExist:
             raise Http404("Poll does not exist")
@@ -58,6 +70,11 @@ def data_get_specific(request):
 
 @csrf_exempt
 def data_post(request):
+    """
+
+    :param request:
+    :return:
+    """
     if request.method == 'POST':
         json_data = json.loads(request.body)
         d = DataSet(date=json_data['date'],
@@ -74,6 +91,11 @@ def data_post(request):
 
 
 def upload_data_file(request):
+    """
+
+    :param request:
+    :return:
+    """
     if request.method == 'GET':
         with open(os.path.join(os.getcwd(), r'polls\dataset.csv')) as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=',')
