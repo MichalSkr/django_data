@@ -24,6 +24,7 @@
                 <th>Installs</th>
                 <th>Spend</th>
                 <th>Revenue</th>
+                <th>CPI</th>
             </tr>
 
              {% for d in data %}
@@ -62,6 +63,9 @@
 
                     <td>
                         {{ d.revenue }}
+                    </td>
+                    <td>
+                        {{ d.CPI }}
                     </td>
                 </tr>
             {% endfor %}
