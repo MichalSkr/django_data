@@ -1,5 +1,6 @@
 from django.http import HttpResponse, Http404
 from django.shortcuts import render
+from django.http import JsonResponse
 from polls.models import DataSet
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Sum, Count, Avg, Q, Case, F, FloatField, When
@@ -11,24 +12,31 @@ data_query = None
 
 
 def data_get(request):
-    """
-
-    :param request:
-    :return:
-    """
     if request.method == 'GET':
         global data_query
 
         if not data_query:
             data_query = DataSet.objects.all()
 
-        args = {'data': data_query}
-        return render(request, 'detail.html', args)
+        args = {'data': list(data_query.values())}
+        return JsonResponse(args, safe=False)
+
+
+def data_browse(request):
+    """
+        Renders html, from already quarried data with selected parameters in data_get_specific.
+        :param request:
+        :return: Rendered html
+        """
+    if request.method == 'GET':
+        return render(request, 'table.html', {})
 
 
 @csrf_exempt
 def data_get_specific(request):
     """
+    Post method, that returns filtered, grouped_by, sotred_by json data.
+
 
     :param request:
     :return:
@@ -64,13 +72,14 @@ def data_get_specific(request):
 
         except DataSet.DoesNotExist:
             raise Http404("Poll does not exist")
-        args = {'data': data_query}
-        return render(request, 'detail.html', args)
+        args = {'data': list(data_query)}
+        return JsonResponse(args)
 
 
 @csrf_exempt
 def data_post(request):
     """
+    Method to post one record to database.
 
     :param request:
     :return:
@@ -92,6 +101,7 @@ def data_post(request):
 
 def upload_data_file(request):
     """
+    Method to upload full csv into database.
 
     :param request:
     :return:

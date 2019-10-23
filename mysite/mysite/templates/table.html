@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<head>
+<title>Table</title>
+<script type="text/javascript" src="//code.jquery.com/jquery-3.3.1.js"></script>
+<script type="text/javascript" src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" />
+<script>
+function update_table(data, status, xhr) {
+$('#example').DataTable({
+"data": data["data"],
+"columns": [
+{ "data": "channel" },
+{ "data": "country" },
+{ "data": "os" },
+{ "data": "impressions" },
+{ "data": "clicks" },
+{ "data": "installs" },
+{ "data": "spend" },
+{ "data": "revenue" },
+]
+});
+}
+function refetch_data() {
+var data = JSON.parse( $('#json').text() );
+$.ajax('/polls/data_get_specific', {
+type: "POST",
+dataType: "json",
+data: JSON.stringify(data),
+success: update_table
+});
+}
+</script>
+</head>
+<body>
+<textarea id="json" rows="13" cols="50">{
+"filter_by": {
+"date_from": "2017-05-17",
+"date_to": "2017-05-18",
+"channel": "",
+"country": "",
+"os": ""
+},
+"sort_by": ["-channel", "country"],
+"order": "descending",
+"group_by": ["channel", "country"]
+}</textarea>
+<button onclick="refetch_data()">Update</button>
+
+<hr>
+
+<table id="example" class="display" width="100%"></table>
+</body>
+</html>
