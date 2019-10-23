@@ -7,6 +7,7 @@ After installing requirements one has to run:
 - in order to upload data.csv into database use method upload_data_file. It can be done by simply 
 going to: http://127.0.0.1:8000/polls/upload_data_file in brwoser or using REST client like Insomnia
  (link: https://insomnia.rest/)
+ 
  #Methods
  Available functions:
  - data_get
@@ -14,6 +15,7 @@ going to: http://127.0.0.1:8000/polls/upload_data_file in brwoser or using REST 
  - data_get_specific
  - data_post
  - upload_data_file
+ 
  #Usage
  ##data_get (GET method)
  Going to a browser http://127.0.0.1:8000/polls/data_get
@@ -40,6 +42,7 @@ going to: http://127.0.0.1:8000/polls/upload_data_file in brwoser or using REST 
   "group_by": ["channel"]
 }
 ```
+
 ##data_browse (GET method)
 Function that streams data to front end. IMPORTANT: Please go to url: http://127.0.0.1:8000/polls/data_browse.
 Here one can manualy change the input and when clicking update it will update table in a html!!!
