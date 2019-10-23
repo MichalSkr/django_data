@@ -9,5 +9,5 @@ class DataSet(models.Model):
     impressions = models.IntegerField()
     clicks = models.IntegerField()
     installs = models.IntegerField()
-    spend = models.IntegerField()
-    revenue = models.IntegerField()
+    spend = models.FloatField()
+    revenue = models.FloatField()

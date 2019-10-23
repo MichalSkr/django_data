@@ -1,8 +1,10 @@
 from django.http import HttpResponse, Http404
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render
 from polls.models import DataSet
 from django.views.decorators.csrf import csrf_exempt
 import json
+import csv
+import os
 
 
 def data_get(request):
@@ -32,3 +34,26 @@ def data_post(request):
                     revenue=json_data['revenue'])
         d.save()
         return HttpResponse("Got json data")
+
+
+def upload_data_file(request):
+    if request.method == 'GET':
+        with open(os.path.join(os.getcwd(), r'polls\dataset.csv')) as csv_file:
+            csv_reader = csv.reader(csv_file, delimiter=',')
+            line_count = 0
+            for row in csv_reader:
+                if line_count == 0:
+                    print(f'Column names are {", ".join(row)}')
+                    line_count += 1
+                else:
+                    d = DataSet(date=row[0],
+                                channel=row[1],
+                                country=row[2],
+                                os=row[3],
+                                impressions=row[4],
+                                clicks=row[5],
+                                installs=row[6],
+                                spend=row[7],
+                                revenue=row[8])
+                    d.save()
+    return HttpResponse("Updated data")
