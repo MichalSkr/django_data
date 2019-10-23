@@ -8,7 +8,7 @@ After installing requirements one has to run:
 going to: http://127.0.0.1:8000/polls/upload_data_file in brwoser or using REST client like Insomnia
  (link: https://insomnia.rest/)
  
- #Methods
+ # Methods
  Available functions:
  - data_get
  - data_browse
@@ -16,14 +16,14 @@ going to: http://127.0.0.1:8000/polls/upload_data_file in brwoser or using REST 
  - data_post
  - upload_data_file
  
- #Usage
- ##data_get (GET method)
+ # Usage
+ ## data_get (GET method)
  Going to a browser http://127.0.0.1:8000/polls/data_get
  It will render a Html web page with rendered previously data with POST method data_get_specific
  with specific parameters. 
  
  If data_get_specific was not previously executed it will return all data.
- ##data_get_specific (POST method)
+ ## data_get_specific (POST method)
  In order to execute send json with specific informations,
   ie. how to filter data,
   how by what to sort it, what is the order (note - before the parameter in order means
@@ -43,7 +43,7 @@ going to: http://127.0.0.1:8000/polls/upload_data_file in brwoser or using REST 
 }
 ```
 
-##data_browse (GET method)
+## data_browse (GET method)
 Function that streams data to front end. IMPORTANT: Please go to url: http://127.0.0.1:8000/polls/data_browse.
 Here one can manualy change the input and when clicking update it will update table in a html!!!
 Using data_get_specific() method!
