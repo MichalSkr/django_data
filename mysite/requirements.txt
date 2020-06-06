@@ -1,2 +1,2 @@
-Django==2.2.6
+Django==2.2.13
 django-group-by==0.3.1
